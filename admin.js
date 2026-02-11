@@ -25,7 +25,7 @@ const SANCTUARY_CATEGORIES = [
     { id: 'hair-oils', sectionId: 'holistic-wellness', name: 'Hair Care Oils', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03' }
 ];
 
-const DEFAULT_SITE_CONTENT = {
+const ADMIN_DEFAULT_CONTENT = {
     hero: {
         title: "Nature care \nfor your Soul",
         subtitle: "Luxury Inspired by Nature",
@@ -118,7 +118,7 @@ const DEFAULT_SITE_CONTENT = {
 function seedSanctuary() {
     if (!localStorage.getItem('anshu-care-sections')) localStorage.setItem('anshu-care-sections', JSON.stringify(SANCTUARY_SECTIONS));
     if (!localStorage.getItem('anshu-care-categories')) localStorage.setItem('anshu-care-categories', JSON.stringify(SANCTUARY_CATEGORIES));
-    if (!localStorage.getItem('anshu-care-content')) localStorage.setItem('anshu-care-content', JSON.stringify(DEFAULT_SITE_CONTENT));
+    if (!localStorage.getItem('anshu-care-content')) localStorage.setItem('anshu-care-content', JSON.stringify(ADMIN_DEFAULT_CONTENT));
 }
 seedSanctuary();
 
@@ -887,20 +887,20 @@ function loadPageContent() {
 
     // Initialize if missing or empty
     if (!content) {
-        content = DEFAULT_SITE_CONTENT;
+        content = ADMIN_DEFAULT_CONTENT;
         localStorage.setItem('anshu-care-content', JSON.stringify(content));
     }
 
     // Deep merge / Ensure sections exist to prevent crashes on access
-    if (!content.hero) content.hero = DEFAULT_SITE_CONTENT.hero;
-    if (!content.about) content.about = DEFAULT_SITE_CONTENT.about;
-    if (!content.contact) content.contact = DEFAULT_SITE_CONTENT.contact;
-    if (!content.testimonials) content.testimonials = DEFAULT_SITE_CONTENT.testimonials;
-    if (!content.features) content.features = DEFAULT_SITE_CONTENT.features;
-    if (!content.categoriesHeader) content.categoriesHeader = DEFAULT_SITE_CONTENT.categoriesHeader;
-    if (!content.homeCategories) content.homeCategories = DEFAULT_SITE_CONTENT.homeCategories;
-    if (!content.aboutPage) content.aboutPage = DEFAULT_SITE_CONTENT.aboutPage;
-    if (!content.footer) content.footer = DEFAULT_SITE_CONTENT.footer;
+    if (!content.hero) content.hero = ADMIN_DEFAULT_CONTENT.hero;
+    if (!content.about) content.about = ADMIN_DEFAULT_CONTENT.about;
+    if (!content.contact) content.contact = ADMIN_DEFAULT_CONTENT.contact;
+    if (!content.testimonials) content.testimonials = ADMIN_DEFAULT_CONTENT.testimonials;
+    if (!content.features) content.features = ADMIN_DEFAULT_CONTENT.features;
+    if (!content.categoriesHeader) content.categoriesHeader = ADMIN_DEFAULT_CONTENT.categoriesHeader;
+    if (!content.homeCategories) content.homeCategories = ADMIN_DEFAULT_CONTENT.homeCategories;
+    if (!content.aboutPage) content.aboutPage = ADMIN_DEFAULT_CONTENT.aboutPage;
+    if (!content.footer) content.footer = ADMIN_DEFAULT_CONTENT.footer;
 
     // Fill Hero Fields
     document.getElementById('editHeroTitle').value = content.hero.title;
