@@ -25,9 +25,100 @@ const SANCTUARY_CATEGORIES = [
     { id: 'hair-oils', sectionId: 'holistic-wellness', name: 'Hair Care Oils', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03' }
 ];
 
+const DEFAULT_SITE_CONTENT = {
+    hero: {
+        title: "Nature care \nfor your Soul",
+        subtitle: "Luxury Inspired by Nature",
+        description: "Experience the purity of ancient Ayurveda with Anshu Care. Our handcrafted herbal solutions bring you the best of nature for holistic wellness.",
+        image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
+    },
+    about: {
+        title: "Rooted in Tradition, Crafted for Today",
+        text: "Anshu Care was born from a simple belief: Nature has all the answers. Our journey started in the heart of traditional Ayurvedic practices, where we discovered the transformative power of botanical extracts.",
+        text2: "Each product in our collection is a tribute to the earth, crafted with 100% natural ingredients, zero harsh chemicals, and a promise of purity.",
+        image: "https://images.unsplash.com/photo-1512850183-6d7990f42385?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        values: [
+            { icon: "fas fa-leaf", text: "Organic Sourcing" },
+            { icon: "fas fa-hand-holding-heart", text: "Cruelty Free" },
+            { icon: "fas fa-recycle", text: "Eco Packaging" }
+        ]
+    },
+    contact: {
+        title: "Get in Touch",
+        description: "Have questions about our products or want to learn more about Ayurveda? We'd love to hear from you.",
+        email: "hello@anshucare.com",
+        phone: "+91 98765 43210",
+        phoneLabel: "Helpline",
+        address: "123 Herbal Lane, Wellness Quarter, Kolkata, West Bengal 700001",
+        addressLabel: "Our Sanctuary",
+        whatsapp: "919876543210",
+        instagram: "https://instagram.com",
+        youtube: "https://youtube.com"
+    },
+    testimonials: [
+        { name: "Priya S.", comment: "The Keshajyoti shampoo has completely transformed my hair texture. It feels so much lighter and healthier now!", rating: 5 },
+        { name: "Rahul M.", comment: "I've been using the face serum for a month and the glow is real. Highly recommended!", rating: 5 },
+        { name: "Anjali K.", comment: "Love the packaging and the scent. Feels like a spa at home.", rating: 4 }
+    ],
+    features: [
+        { icon: "fas fa-leaf", text: "100% Organic" },
+        { icon: "fas fa-hand-holding-heart", text: "Cruelty Free" },
+        { icon: "fas fa-earth-asia", text: "Ayurvedic Wisdom" }
+    ],
+    categoriesHeader: {
+        title: "Our Pure Essentials",
+        subtitle: "Carefully formulated products for every part of your beauty ritual."
+    },
+    homeCategories: [
+        { id: 'best-sellers', name: 'Best Sellers', icon: 'fas fa-star' },
+        { id: 'body-care', name: 'Body Care', icon: 'fas fa-spa' },
+        { id: 'hair-oils', name: 'Hair Care', icon: 'fas fa-pump-soap' },
+        { id: 'face-masks', name: 'Face Care', icon: 'fas fa-mask' }
+    ],
+    aboutPage: {
+        heroTitle: "About Anshu Care",
+        heroSubtitle: "Our Roots",
+        vision: {
+            title: "Our Vision",
+            text: "To be a global beacon of holistic wellness, reconnecting people with the healing power of nature."
+        },
+        mission: {
+            title: "Our Mission",
+            text: "To provide authentic, high-quality Ayurvedic products that nurture the body, mind, and soul."
+        },
+        header: {
+            /* Ensuring structure exists for admin panel deeply nested checks */
+            label: "Our Legacy", title: "About Anshu Care", text1: "", text2: "", image: "",
+            stat1Value: "5000+", stat1Label: "Happy Customers", stat2Value: "100%", stat2Label: "Organic"
+        }
+    },
+    footer: {
+        tagline: "Nature care",
+        description: "Nature care for your holistic wellbeing. Premium ayurvedic solutions delivered to your doorstep.",
+        quickLinks: [
+            { text: "Home", url: "index.html" },
+            { text: "Products", url: "products.html" },
+            { text: "About Us", url: "about.html" },
+            { text: "Contact Us", url: "contact.html" }
+        ],
+        legalLinks: [
+            { text: "Privacy Policy", url: "privacy-policy.html" },
+            { text: "Terms & Conditions", url: "terms-conditions.html" },
+            { text: "Refund Policy", url: "refund-policy.html" },
+            { text: "Sitemap", url: "#" }
+        ],
+        socialLinks: [
+            { icon: "fab fa-instagram", url: "https://instagram.com" },
+            { icon: "fab fa-whatsapp", url: "https://wa.me/919876543210" },
+            { icon: "fab fa-youtube", url: "https://youtube.com" }
+        ]
+    }
+};
+
 function seedSanctuary() {
     if (!localStorage.getItem('anshu-care-sections')) localStorage.setItem('anshu-care-sections', JSON.stringify(SANCTUARY_SECTIONS));
     if (!localStorage.getItem('anshu-care-categories')) localStorage.setItem('anshu-care-categories', JSON.stringify(SANCTUARY_CATEGORIES));
+    if (!localStorage.getItem('anshu-care-content')) localStorage.setItem('anshu-care-content', JSON.stringify(DEFAULT_SITE_CONTENT));
 }
 seedSanctuary();
 
@@ -792,8 +883,24 @@ function openAddBlog() {
 
 // --- PAGE CONTENT MANAGEMENT ---
 function loadPageContent() {
-    const content = JSON.parse(localStorage.getItem('anshu-care-content'));
-    if (!content) return;
+    let content = JSON.parse(localStorage.getItem('anshu-care-content'));
+
+    // Initialize if missing or empty
+    if (!content) {
+        content = DEFAULT_SITE_CONTENT;
+        localStorage.setItem('anshu-care-content', JSON.stringify(content));
+    }
+
+    // Deep merge / Ensure sections exist to prevent crashes on access
+    if (!content.hero) content.hero = DEFAULT_SITE_CONTENT.hero;
+    if (!content.about) content.about = DEFAULT_SITE_CONTENT.about;
+    if (!content.contact) content.contact = DEFAULT_SITE_CONTENT.contact;
+    if (!content.testimonials) content.testimonials = DEFAULT_SITE_CONTENT.testimonials;
+    if (!content.features) content.features = DEFAULT_SITE_CONTENT.features;
+    if (!content.categoriesHeader) content.categoriesHeader = DEFAULT_SITE_CONTENT.categoriesHeader;
+    if (!content.homeCategories) content.homeCategories = DEFAULT_SITE_CONTENT.homeCategories;
+    if (!content.aboutPage) content.aboutPage = DEFAULT_SITE_CONTENT.aboutPage;
+    if (!content.footer) content.footer = DEFAULT_SITE_CONTENT.footer;
 
     // Fill Hero Fields
     document.getElementById('editHeroTitle').value = content.hero.title;
