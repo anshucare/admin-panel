@@ -38,7 +38,7 @@ const DEFAULT_SITE_CONTENT = {
         phoneLabel: "Helpline",
         address: "123 Herbal Lane, Wellness Quarter, Kolkata, West Bengal 700001",
         addressLabel: "Our Sanctuary",
-        whatsapp: "919876543210",
+        whatsapp: "917337082606",
         instagram: "https://instagram.com",
         youtube: "https://youtube.com"
     },
@@ -91,7 +91,7 @@ const DEFAULT_SITE_CONTENT = {
         ],
         socialLinks: [
             { icon: "fab fa-instagram", url: "https://instagram.com" },
-            { icon: "fab fa-whatsapp", url: "https://wa.me/919876543210" },
+            { icon: "fab fa-whatsapp", url: "https://wa.me/917337082606" },
             { icon: "fab fa-youtube", url: "https://youtube.com" }
         ]
     }

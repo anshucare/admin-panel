@@ -176,49 +176,54 @@ function openFooterLinksEditor() {
     const content = JSON.parse(localStorage.getItem('anshu-care-content')) || {};
     const footer = content.footer || {};
 
-    // Quick Links
-    let quickLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Quick Links</h3><div style="display:flex; flex-direction:column; gap:10px;">';
-    (footer.quickLinks || []).forEach(l => {
-        quickLinksHtml += `
-            <div class="quick-link-item" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <input type="text" class="ql-text" value="${l.text}" placeholder="Link Text" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-                <input type="text" class="ql-url" value="${l.url}" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+    // Helper to generate a link row
+    const createRow = (type, val1, val2, placeholder1, placeholder2) => `
+        <div class="${type}-item" style="display:flex; align-items:center; gap:10px; margin-bottom:10px; background:#fff; padding:10px; border:1px solid #eee; border-radius:8px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; flex-grow:1;">
+                <input type="text" class="${type}-text" value="${val1}" placeholder="${placeholder1}" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+                <input type="text" class="${type}-url" value="${val2}" placeholder="${placeholder2}" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
             </div>
-        `;
+            <button onclick="this.closest('.${type}-item').remove()" style="color:red; background:none; border:none; cursor:pointer; padding:5px;"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+
+    const createSocialRow = (type, val1, val2) => `
+        <div class="${type}-item" style="display:flex; align-items:center; gap:10px; margin-bottom:10px; background:#fff; padding:10px; border:1px solid #eee; border-radius:8px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; flex-grow:1;">
+                <input type="text" class="${type}-icon" value="${val1}" placeholder="Icon Class (e.g. fab fa-instagram)" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+                <input type="text" class="${type}-url" value="${val2}" placeholder="Profile URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+            </div>
+            <button onclick="this.closest('.${type}-item').remove()" style="color:red; background:none; border:none; cursor:pointer; padding:5px;"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+
+    // Quick Links
+    let quickLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Quick Links</h3><div style="display:flex; flex-direction:column; gap:5px;">';
+    (footer.quickLinks || []).forEach(l => {
+        quickLinksHtml += createRow('ql', l.text, l.url, 'Link Text', 'URL');
     });
-    // Add button for new quick link
     quickLinksHtml += `
-        <button onclick="addLinkField(this, 'quick-link-item', 'ql')" style="margin-top:5px; background:#f0f0f0; border:none; padding:5px; cursor:pointer;">+ Add Quick Link</button>
+        <button onclick="addLinkField(this, 'ql')" style="margin-top:5px; background:#f0f0f0; border:none; padding:8px; cursor:pointer; border-radius:5px; width:100%;">+ Add Quick Link</button>
         </div>
     `;
 
     // Legal Links
-    let legalLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Legal Links</h3><div style="display:flex; flex-direction:column; gap:10px;">';
+    let legalLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Legal Links</h3><div style="display:flex; flex-direction:column; gap:5px;">';
     (footer.legalLinks || []).forEach(l => {
-        legalLinksHtml += `
-            <div class="legal-link-item" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <input type="text" class="ll-text" value="${l.text}" placeholder="Link Text" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-                <input type="text" class="ll-url" value="${l.url}" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-            </div>
-        `;
+        legalLinksHtml += createRow('ll', l.text, l.url, 'Link Text', 'URL');
     });
     legalLinksHtml += `
-        <button onclick="addLinkField(this, 'legal-link-item', 'll')" style="margin-top:5px; background:#f0f0f0; border:none; padding:5px; cursor:pointer;">+ Add Legal Link</button>
+        <button onclick="addLinkField(this, 'll')" style="margin-top:5px; background:#f0f0f0; border:none; padding:8px; cursor:pointer; border-radius:5px; width:100%;">+ Add Legal Link</button>
         </div>
     `;
 
     // Social Links
-    let socialLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Social Media</h3><div style="display:flex; flex-direction:column; gap:10px;">';
+    let socialLinksHtml = '<h3 style="margin: 1.5rem 0 1rem; color: var(--primary);">Social Media</h3><div style="display:flex; flex-direction:column; gap:5px;">';
     (footer.socialLinks || []).forEach(l => {
-        socialLinksHtml += `
-            <div class="social-link-item" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <input type="text" class="sl-icon" value="${l.icon}" placeholder="Icon Class (e.g. fab fa-instagram)" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-                <input type="text" class="sl-url" value="${l.url}" placeholder="Profile URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-            </div>
-        `;
+        socialLinksHtml += createSocialRow('sl', l.icon, l.url);
     });
     socialLinksHtml += `
-        <button onclick="addLinkField(this, 'social-link-item', 'sl')" style="margin-top:5px; background:#f0f0f0; border:none; padding:5px; cursor:pointer;">+ Add Social Link</button>
+        <button onclick="addLinkField(this, 'sl')" style="margin-top:5px; background:#f0f0f0; border:none; padding:8px; cursor:pointer; border-radius:5px; width:100%;">+ Add Social Link</button>
         </div>
     `;
 
@@ -229,27 +234,26 @@ function openFooterLinksEditor() {
     };
 }
 
-function addLinkField(btn, itemClass, prefix) {
-    const container = btn.previousElementSibling || btn.parentElement;
-    // Actually we are appending to the div before the button. The button is naturally inside the main div or after?
-    // In my HTML above: </div> (closes the flex col), then button. Wait.
-    // The previous loop closed the flex container with `quickLinksHtml += '</div>';`. 
-    // I need to correct the structure so the button appends simply.
-
-    // Let's rely on a simpler approach: finding the container by class or just inserting before the button
+function addLinkField(btn, type) {
     const wrapper = document.createElement('div');
-    wrapper.className = itemClass;
-    wrapper.style.cssText = "display:grid; grid-template-columns: 1fr 1fr; gap:10px;";
+    wrapper.className = `${type}-item`;
+    wrapper.style.cssText = "display:flex; align-items:center; gap:10px; margin-bottom:10px; background:#fff; padding:10px; border:1px solid #eee; border-radius:8px;";
 
-    if (prefix === 'sl') {
+    if (type === 'sl') {
         wrapper.innerHTML = `
-            <input type="text" class="${prefix}-icon" placeholder="Icon Class" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-            <input type="text" class="${prefix}-url" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; flex-grow:1;">
+                <input type="text" class="${type}-icon" placeholder="Icon Class" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+                <input type="text" class="${type}-url" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+            </div>
+            <button onclick="this.closest('.${type}-item').remove()" style="color:red; background:none; border:none; cursor:pointer; padding:5px;"><i class="fas fa-trash"></i></button>
         `;
     } else {
         wrapper.innerHTML = `
-            <input type="text" class="${prefix}-text" placeholder="Link Text" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
-            <input type="text" class="${prefix}-url" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; flex-grow:1;">
+                <input type="text" class="${type}-text" placeholder="Link Text" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+                <input type="text" class="${type}-url" placeholder="URL" style="padding:10px; border:1px solid #ddd; border-radius:5px;">
+            </div>
+            <button onclick="this.closest('.${type}-item').remove()" style="color:red; background:none; border:none; cursor:pointer; padding:5px;"><i class="fas fa-trash"></i></button>
         `;
     }
 
@@ -1009,7 +1013,8 @@ async function savePageContent(type) {
                 if (link.icon.includes('instagram')) link.url = content.contact.instagram || '#';
                 if (link.icon.includes('youtube')) link.url = content.contact.youtube || '#';
                 if (link.icon.includes('whatsapp')) {
-                    const waNum = content.contact.whatsapp.replace(/\+/g, '').replace(/\s/g, '');
+                    // Sanitize: remove all non-numeric characters
+                    const waNum = content.contact.whatsapp.replace(/\D/g, '');
                     link.url = waNum ? `https://wa.me/${waNum}` : '#';
                 }
             });
