@@ -157,20 +157,28 @@ async function convertToBase64(file) {
 }
 
 function switchSection(sectionId, el) {
+    console.log('[DEBUG] switchSection called:', sectionId, el);
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
 
     const section = document.getElementById(sectionId);
-    if (section) section.classList.add('active');
+    if (section) {
+        section.classList.add('active');
+        console.log('[DEBUG] Activated section:', sectionId);
+    } else {
+        console.warn('[DEBUG] Section not found:', sectionId);
+    }
 
     if (el && el.classList) {
         el.classList.add('active');
+        console.log('[DEBUG] Activated nav item:', el);
     } else {
         // Find matching nav item if el not provided
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(i => {
             if (i.getAttribute('onclick')?.includes(`'${sectionId}'`)) {
                 i.classList.add('active');
+                console.log('[DEBUG] Activated nav item by search:', i);
             }
         });
     }
